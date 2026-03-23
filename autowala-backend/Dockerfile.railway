@@ -1,0 +1,61 @@
+# Railway-optimized Laravel Dockerfile
+FROM php:8.2-cli-alpine
+
+# Set working directory
+WORKDIR /var/www
+
+# Install system dependencies
+RUN apk add --no-cache \
+    postgresql-dev \
+    curl-dev \
+    oniguruma-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    git \
+    bash
+
+# Install PHP extensions
+RUN docker-php-ext-install \
+    pdo \
+    pdo_pgsql \
+    bcmath \
+    mbstring \
+    zip
+
+# Install Redis extension
+RUN pecl install redis && docker-php-ext-enable redis
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copy composer files
+COPY composer.json ./
+COPY composer.lock* ./
+
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Copy application code
+COPY . .
+
+# Create autowala user
+RUN addgroup -g 1000 autowala && \
+    adduser -D -u 1000 -G autowala autowala
+
+# Set permissions
+RUN chown -R autowala:autowala /var/www && \
+    chmod -R 755 /var/www/storage /var/www/bootstrap/cache
+
+# Switch to app user
+USER autowala
+
+# Expose port (Railway will provide via $PORT)
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
+    CMD curl -f http://localhost:${PORT:-8080}/api/health || exit 1
+
+# Start command (can be overridden in Railway)
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}

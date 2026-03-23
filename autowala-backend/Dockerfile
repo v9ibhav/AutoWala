@@ -39,10 +39,11 @@ RUN pecl install redis && docker-php-ext-enable redis
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
 # Copy composer files
-COPY composer.json composer.lock ./
+COPY composer.json ./
+COPY composer.lock* ./
 
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-cache
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Production stage
 FROM php:8.2-fpm-alpine AS production
@@ -98,10 +99,8 @@ RUN chown -R autowala:autowala /var/www/storage /var/www/bootstrap/cache && \
 RUN mkdir -p /run/nginx && \
     chown autowala:autowala /run/nginx
 
-# Optimize for production
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
+# Note: Config caching will be done at runtime via start command
+# to ensure environment variables are properly loaded
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
