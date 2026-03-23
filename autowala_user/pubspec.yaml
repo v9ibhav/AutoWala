@@ -1,0 +1,127 @@
+name: autowala_user
+description: AutoWala - Premium Ride Discovery App for Users
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI & Design
+  cupertino_icons: ^1.0.6
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.1
+  shimmer: ^3.0.0
+  lottie: ^3.0.0
+  flutter_animate: ^4.5.0
+
+  # State Management & Architecture
+  riverpod: ^2.4.9
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+  go_router: ^13.2.1
+
+  # Location & Maps
+  google_maps_flutter: ^2.5.3
+  google_polyline_algorithm: ^3.1.0
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
+  permission_handler: ^11.2.0
+
+  # HTTP & API
+  dio: ^5.4.0
+  retrofit: ^4.0.3
+  json_annotation: ^4.8.1
+  pretty_dio_logger: ^1.3.1
+
+  # Firebase
+  firebase_core: ^2.24.2
+  firebase_database: ^10.4.0
+  firebase_messaging: ^14.7.10
+  firebase_crashlytics: ^3.4.8
+  firebase_analytics: ^10.8.0
+
+  # Storage & Caching
+  shared_preferences: ^2.2.2
+  flutter_secure_storage: ^9.0.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # Utilities
+  intl: ^0.19.0
+  uuid: ^4.3.3
+  url_launcher: ^6.2.4
+  share_plus: ^7.2.2
+  device_info_plus: ^9.1.2
+  connectivity_plus: ^5.0.2
+  package_info_plus: ^5.0.1
+
+  # UI Enhancements
+  flutter_keyboard_visibility: ^6.0.0
+  modal_bottom_sheet: ^3.0.0
+  pull_to_refresh: ^2.0.0
+  smooth_page_indicator: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Build & Code Generation
+  build_runner: ^2.4.8
+  riverpod_generator: ^2.3.9
+  retrofit_generator: ^8.0.6
+  json_serializable: ^6.7.1
+  hive_generator: ^2.0.1
+
+  # Linting & Analysis
+  flutter_lints: ^3.0.1
+  very_good_analysis: ^5.1.0
+
+flutter:
+  uses-material-design: true
+
+  # Premium App Assets
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/animations/
+    - assets/logos/
+
+  # Custom Fonts (Inter for premium feel)
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
+
+# Analysis Configuration
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+
+linter:
+  rules:
+    # Performance
+    - avoid_unnecessary_containers
+    - prefer_const_constructors
+    - prefer_const_literals_to_create_immutables
+    - sized_box_shrink_expand
+
+    # Code Quality
+    - prefer_final_locals
+    - prefer_single_quotes
+    - sort_constructors_first
+    - always_declare_return_types

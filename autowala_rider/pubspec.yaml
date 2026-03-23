@@ -1,0 +1,104 @@
+name: autowala_rider
+description: AutoWala Rider App - Clean and simple interface for auto-rickshaw drivers
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # UI & Design
+  cupertino_icons: ^1.0.6
+  flutter_animate: ^4.5.0
+  google_fonts: ^6.2.1
+
+  # Navigation
+  go_router: ^14.1.4
+
+  # Network & API
+  dio: ^5.4.3+1
+  dio_cache_interceptor: ^3.5.0
+  dio_certificate_pinning: ^7.0.2
+
+  # Location & Maps
+  google_maps_flutter: ^2.6.1
+  location: ^5.0.3
+  geolocator: ^11.0.0
+  geocoding: ^3.0.0
+
+  # Firebase
+  firebase_core: ^2.31.0
+  firebase_database: ^10.5.4
+  firebase_messaging: ^14.9.2
+  firebase_crashlytics: ^3.5.4
+  firebase_analytics: ^10.10.4
+
+  # Storage
+  shared_preferences: ^2.2.3
+  flutter_secure_storage: ^9.2.2
+
+  # Image & Media
+  image_picker: ^1.1.1
+  cached_network_image: ^3.3.1
+  flutter_image_compress: ^2.3.0
+
+  # Utilities
+  intl: ^0.19.0
+  url_launcher: ^6.2.6
+  package_info_plus: ^7.0.0
+  device_info_plus: ^10.1.0
+  connectivity_plus: ^6.0.3
+  permission_handler: ^11.3.1
+
+  # Background processing
+  workmanager: ^0.5.2
+  flutter_background_service: ^5.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Code Generation
+  riverpod_generator: ^2.4.0
+  build_runner: ^2.4.9
+  json_annotation: ^4.9.0
+  json_serializable: ^6.8.0
+
+  # Linting
+  flutter_lints: ^3.0.0
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+
+  # Assets
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/sounds/
+
+  # Fonts
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Inter-ExtraBold.ttf
+          weight: 800

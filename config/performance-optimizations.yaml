@@ -1,0 +1,344 @@
+# AutoWala Performance Optimizations Configuration
+# Production-ready optimizations for maximum platform performance
+
+version: '1.0'
+
+# Database Performance Optimizations
+database:
+  postgresql:
+    # Connection pool settings
+    max_connections: 200
+    shared_buffers: 1GB
+    effective_cache_size: 4GB
+    work_mem: 16MB
+    maintenance_work_mem: 256MB
+
+    # PostGIS specific optimizations
+    shared_preload_libraries: 'postgis'
+    max_worker_processes: 8
+    max_parallel_workers: 8
+    max_parallel_workers_per_gather: 4
+
+    # Query optimization
+    random_page_cost: 1.1
+    seq_page_cost: 1.0
+    cpu_tuple_cost: 0.01
+    cpu_index_tuple_cost: 0.005
+    cpu_operator_cost: 0.0025
+
+    # Logging for performance analysis
+    log_min_duration_statement: 1000
+    log_checkpoints: on
+    log_connections: off
+    log_disconnections: off
+    log_lock_waits: on
+
+    # Vacuum and autovacuum settings
+    autovacuum_vacuum_threshold: 50
+    autovacuum_analyze_threshold: 50
+    autovacuum_vacuum_scale_factor: 0.1
+    autovacuum_analyze_scale_factor: 0.05
+
+  # Essential indexes for AutoWala
+  indexes:
+    spatial_indexes:
+      - "CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_riders_location_gist ON riders USING GIST (current_location)"
+      - "CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_rides_pickup_location ON ride_logs USING GIST (pickup_location)"
+      - "CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_rides_dropoff_location ON ride_logs USING GIST (dropoff_location)"
+
+    performance_indexes:
+      - "CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_riders_status_online ON riders (status, updated_at) WHERE status = 'online'"
+      - "CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_rides_status_created ON ride_logs (status, created_at)"
+      - "CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_users_phone_verified ON users (phone_number) WHERE phone_verified_at IS NOT NULL"
+      - "CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_riders_rating_rides ON riders (average_rating DESC, total_rides DESC)"
+
+# Redis Cache Configuration
+redis:
+  # Memory management
+  maxmemory: '2gb'
+  maxmemory_policy: 'allkeys-lru'
+
+  # Performance settings
+  tcp_keepalive: 300
+  timeout: 0
+  tcp_backlog: 511
+
+  # Persistence for production
+  save:
+    - '900 1'      # Save if at least 1 key changed in 900 seconds
+    - '300 10'     # Save if at least 10 keys changed in 300 seconds
+    - '60 10000'   # Save if at least 10000 keys changed in 60 seconds
+
+  # AOF for durability
+  appendonly: yes
+  appendfsync: 'everysec'
+  auto_aof_rewrite_percentage: 100
+  auto_aof_rewrite_min_size: '64mb'
+
+# Laravel Application Optimizations
+laravel:
+  # PHP-FPM Configuration
+  php_fpm:
+    pm: 'dynamic'
+    pm_max_children: 50
+    pm_start_servers: 10
+    pm_min_spare_servers: 5
+    pm_max_spare_servers: 15
+    pm_process_idle_timeout: '10s'
+    pm_max_requests: 500
+
+  # OPcache settings
+  opcache:
+    enable: 1
+    enable_cli: 1
+    memory_consumption: 256
+    interned_strings_buffer: 16
+    max_accelerated_files: 20000
+    validate_timestamps: 0
+    revalidate_freq: 0
+    fast_shutdown: 1
+
+  # Laravel specific optimizations
+  optimizations:
+    config_cache: true
+    route_cache: true
+    view_cache: true
+    query_cache: true
+
+  # Queue worker configuration
+  queue:
+    driver: 'redis'
+    workers: 4
+    timeout: 60
+    max_tries: 3
+    retry_after: 90
+    batch_size: 10
+
+# Nginx Configuration for Admin Panel
+nginx:
+  # Worker processes and connections
+  worker_processes: 'auto'
+  worker_connections: 1024
+  worker_rlimit_nofile: 2048
+
+  # Performance settings
+  sendfile: on
+  tcp_nopush: on
+  tcp_nodelay: on
+  keepalive_timeout: 65
+  keepalive_requests: 100
+
+  # Gzip compression
+  gzip:
+    enabled: true
+    comp_level: 6
+    min_length: 1024
+    types:
+      - 'text/plain'
+      - 'text/css'
+      - 'text/xml'
+      - 'text/javascript'
+      - 'application/javascript'
+      - 'application/xml+rss'
+      - 'application/json'
+      - 'image/svg+xml'
+
+  # Static file caching
+  static_cache:
+    location: '~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$'
+    expires: '1y'
+    cache_control: 'public, immutable'
+
+# AWS ECS Optimizations
+ecs:
+  # Service configuration
+  desired_count: 2
+  min_capacity: 2
+  max_capacity: 10
+
+  # Auto scaling policies
+  scaling_policies:
+    cpu_target: 70
+    memory_target: 80
+    scale_up_cooldown: 300
+    scale_down_cooldown: 300
+
+  # Health check settings
+  health_check:
+    healthy_threshold: 2
+    unhealthy_threshold: 3
+    timeout: 5
+    interval: 30
+    grace_period: 60
+
+# CloudWatch Monitoring
+monitoring:
+  # Custom metrics to track
+  custom_metrics:
+    - name: 'LocationSearchLatency'
+      description: 'Time taken for location-based rider search'
+      unit: 'Milliseconds'
+      threshold: 200
+
+    - name: 'ActiveRiders'
+      description: 'Number of currently online riders'
+      unit: 'Count'
+      threshold: 100
+
+    - name: 'RideCompletionRate'
+      description: 'Percentage of successful ride completions'
+      unit: 'Percent'
+      threshold: 95
+
+    - name: 'DatabaseConnectionPool'
+      description: 'Database connection pool utilization'
+      unit: 'Percent'
+      threshold: 80
+
+  # Alert thresholds
+  alerts:
+    high_cpu:
+      threshold: 80
+      evaluation_periods: 2
+      period: 300
+
+    high_memory:
+      threshold: 90
+      evaluation_periods: 2
+      period: 300
+
+    high_db_connections:
+      threshold: 85
+      evaluation_periods: 1
+      period: 300
+
+    api_error_rate:
+      threshold: 5  # 5% error rate
+      evaluation_periods: 3
+      period: 60
+
+# CDN Configuration for CloudFront
+cdn:
+  # Cache behaviors
+  default_cache_behavior:
+    viewer_protocol_policy: 'redirect-to-https'
+    compress: true
+    ttl:
+      min: 0
+      default: 86400  # 1 day
+      max: 31536000   # 1 year
+
+  # Origin request policy
+  origin_request_policy:
+    headers:
+      - 'Authorization'
+      - 'CloudFront-Forwarded-Proto'
+    query_strings: 'all'
+    cookies: 'none'
+
+# Load Balancer Optimizations
+load_balancer:
+  # Connection draining
+  deregistration_delay: 30
+
+  # Health check configuration
+  health_check:
+    protocol: 'HTTP'
+    path: '/api/health'
+    healthy_threshold: 2
+    unhealthy_threshold: 3
+    timeout: 5
+    interval: 30
+
+  # Stickiness (disabled for stateless API)
+  stickiness:
+    enabled: false
+
+# Security Performance Settings
+security:
+  # Rate limiting configuration
+  rate_limiting:
+    requests_per_minute: 100
+    burst_capacity: 150
+
+  # SSL/TLS optimizations
+  ssl:
+    protocols:
+      - 'TLSv1.2'
+      - 'TLSv1.3'
+    ciphers: 'ECDHE+AESGCM:ECDHE+CHACHA20:DHE+AESGCM:DHE+CHACHA20:!aNULL:!MD5:!DSS'
+    session_cache: '1m'
+    session_timeout: '5m'
+
+# Firebase Realtime Database Optimization
+firebase:
+  # IndexOn rules for better query performance
+  indexes:
+    active_riders:
+      - 'lat'
+      - 'lon'
+      - 'timestamp'
+      - 'status'
+
+    active_rides:
+      - 'user_id'
+      - 'rider_id'
+      - 'status'
+      - 'timestamp'
+
+  # Security rules optimized for performance
+  security_rules:
+    read_timeout: '10s'
+    write_timeout: '5s'
+    max_depth: 32
+
+# Mobile App Performance Settings
+mobile_apps:
+  # Flutter build optimizations
+  flutter:
+    build_mode: 'release'
+    obfuscation: true
+    tree_shake_icons: true
+    split_debug_info: true
+
+  # Network optimizations
+  network:
+    connection_timeout: 30
+    read_timeout: 30
+    retry_attempts: 3
+    cache_duration: 300  # 5 minutes
+
+  # Location service optimization
+  location:
+    update_interval: 10  # seconds
+    accuracy_threshold: 15  # meters
+    battery_optimization: true
+
+# Backup and Recovery Performance
+backup:
+  # RDS backup configuration
+  rds:
+    backup_retention: 7
+    backup_window: '03:00-04:00'
+    maintenance_window: 'sun:04:00-sun:05:00'
+
+  # S3 lifecycle policies
+  s3:
+    transition_to_ia: 30  # days
+    transition_to_glacier: 90  # days
+    expiration: 2555  # 7 years
+
+# Performance Testing Configuration
+testing:
+  # Load test parameters
+  load_test:
+    concurrent_users: 100
+    ramp_up_time: 60
+    test_duration: 300
+
+  # Performance benchmarks
+  benchmarks:
+    api_response_time: 200  # ms
+    database_query_time: 100  # ms
+    page_load_time: 3000  # ms
+    first_contentful_paint: 1500  # ms
