@@ -64,18 +64,11 @@ RUN apk add --no-cache \
     supervisor \
     bash
 
-# Install PHP extensions
+# Install PHP extensions (json and tokenizer are built-in since PHP 8.0)
 RUN docker-php-ext-install \
-    pdo \
     pdo_pgsql \
     bcmath \
-    ctype \
-    fileinfo \
-    json \
-    mbstring \
-    tokenizer \
-    xml \
-    curl
+    mbstring
 
 # Install Redis extension
 RUN pecl install redis && docker-php-ext-enable redis
