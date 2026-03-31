@@ -56,10 +56,22 @@ RUN mkdir -p storage/logs storage/framework/{cache,sessions,views} bootstrap/cac
 RUN mkdir -p /run/nginx /var/log/nginx && \
     chown -R autowala:autowala /run/nginx /var/log/nginx
 
-# Copy configuration files
-COPY docker/nginx/autowala.conf /etc/nginx/http.d/default.conf 2>/dev/null || echo "nginx config not found, will use default"
-COPY docker/php/php.ini /usr/local/etc/php/conf.d/autowala.ini 2>/dev/null || echo "php.ini not found, will use default"
-COPY docker/supervisord/supervisord.conf /etc/supervisord.conf 2>/dev/null || echo "supervisord config not found, will create default"
+# Copy configuration files if they exist, otherwise create defaults
+RUN if [ -f docker/nginx/autowala.conf ]; then \
+        cp docker/nginx/autowala.conf /etc/nginx/http.d/default.conf; \
+    else \
+        echo "Creating default nginx config"; \
+    fi && \
+    if [ -f docker/php/php.ini ]; then \
+        cp docker/php/php.ini /usr/local/etc/php/conf.d/autowala.ini; \
+    else \
+        echo "Using default PHP config"; \
+    fi && \
+    if [ -f docker/supervisord/supervisord.conf ]; then \
+        cp docker/supervisord/supervisord.conf /etc/supervisord.conf; \
+    else \
+        echo "Will create default supervisord config"; \
+    fi
 
 # Create default supervisord config if not exists
 RUN if [ ! -f /etc/supervisord.conf ]; then \
@@ -99,10 +111,20 @@ RUN if [ ! -f /etc/nginx/http.d/default.conf ]; then \
     echo "}" >> /etc/nginx/http.d/default.conf; \
     fi
 
-# Generate Laravel key and cache config (with fallback)
-RUN php artisan key:generate --no-interaction 2>/dev/null || echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env && \
-    php artisan config:cache 2>/dev/null || echo "Config cache skipped" && \
-    php artisan route:cache 2>/dev/null || echo "Route cache skipped"
+# Generate Laravel application key and optimize (with error handling)
+RUN if [ -f .env ]; then \
+        echo "Using existing .env file"; \
+    else \
+        echo "APP_NAME=AutoWala" > .env && \
+        echo "APP_ENV=production" >> .env && \
+        echo "APP_DEBUG=false" >> .env && \
+        echo "APP_KEY=" >> .env && \
+        echo "LOG_CHANNEL=stderr" >> .env && \
+        echo "DB_CONNECTION=pgsql" >> .env; \
+    fi && \
+    (php artisan key:generate --no-interaction --force || echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env) && \
+    (php artisan config:cache --no-interaction || echo "Config cache skipped - will cache at runtime") && \
+    (php artisan route:cache --no-interaction || echo "Route cache skipped - will cache at runtime")
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
