@@ -6,6 +6,7 @@ class AppConstants {
   static const String appName = 'AutoWala';
   static const String appDescription = 'Premium Ride Discovery Platform';
   static const String version = '1.0.0';
+  static const String appVersion = version; // Alias for backward compatibility
   static const String buildNumber = '1';
 
   // Environment
@@ -24,14 +25,14 @@ class AppConstants {
   static const String userEndpoint = '$apiBaseUrl/user';
 
   // Google Maps Configuration
-  static const String googleMapsApiKey = 'YOUR_GOOGLE_MAPS_API_KEY';
+  static const String googleMapsApiKey = 'AIzaSyBdVl-cGnaq2rt_HEHhoqa_SkGBMiMeBiE'; // Demo key - Update with real key later
   static const double defaultZoom = 16.0;
   static const double defaultLocationZoom = 18.0;
 
   // Firebase Configuration
-  static const String firebaseProjectId = 'autowala-ride-discovery';
+  static const String firebaseProjectId = 'autowala-6610e';
   static const String firebaseDatabaseUrl =
-      'https://autowala-ride-discovery-default-rtdb.asia-southeast1.firebasedatabase.app/';
+      'https://autowala-6610e-default-rtdb.firebaseio.com/';
 
   // Location Configuration
   static const double defaultLatitude = 19.0760; // Mumbai

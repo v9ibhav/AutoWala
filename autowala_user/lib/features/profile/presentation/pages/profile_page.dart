@@ -91,7 +91,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         _isLoading = false;
       });
 
-      AppLogger.error('Failed to load ride history', error: e.toString());
+      AppLogger.error('Failed to load ride history', e.toString());
     }
   }
 
@@ -138,7 +138,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         ),
       );
 
-      AppLogger.error('Failed to update profile', error: e.toString());
+      AppLogger.error('Failed to update profile', e.toString());
     }
   }
 

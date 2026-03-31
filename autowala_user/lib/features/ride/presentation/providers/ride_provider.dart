@@ -54,7 +54,7 @@ class RideNotifier extends StateNotifier<RideState> {
     String? additionalNotes,
   }) async {
     try {
-      state = state.copyWith(isLoading: true, error: null);
+      state = state.copyWith(isLoading: true, null);
 
       final response = await _apiService.post('/rides/book', {
         'rider_id': riderId,
@@ -85,10 +85,7 @@ class RideNotifier extends StateNotifier<RideState> {
         throw Exception(response['message'] ?? 'Failed to book ride');
       }
     } catch (e) {
-      AppLogger.error('Failed to book ride', error: e.toString(), parameters: {
-        'rider_id': riderId,
-        'passenger_count': passengerCount,
-      });
+      AppLogger.error('Failed to book ride', e.toString());
 
       state = state.copyWith(
         isLoading: false,
@@ -101,7 +98,7 @@ class RideNotifier extends StateNotifier<RideState> {
   /// Cancel current ride
   Future<void> cancelRide(String rideId, [String? cancellationReason]) async {
     try {
-      state = state.copyWith(isLoading: true, error: null);
+      state = state.copyWith(isLoading: true, null);
 
       final response = await _apiService.post('/rides/$rideId/cancel', {
         'cancellation_reason': cancellationReason,
@@ -126,11 +123,7 @@ class RideNotifier extends StateNotifier<RideState> {
         throw Exception(response['message'] ?? 'Failed to cancel ride');
       }
     } catch (e) {
-      AppLogger.error('Failed to cancel ride',
-          error: e.toString(),
-          parameters: {
-            'ride_id': rideId,
-          });
+      AppLogger.error('Failed to cancel ride', e.toString());
 
       state = state.copyWith(
         isLoading: false,
@@ -148,7 +141,7 @@ class RideNotifier extends StateNotifier<RideState> {
     String? tip,
   }) async {
     try {
-      state = state.copyWith(isLoading: true, error: null);
+      state = state.copyWith(isLoading: true, null);
 
       final response = await _apiService.post('/rides/$rideId/complete', {
         'rating': rating,
@@ -179,11 +172,7 @@ class RideNotifier extends StateNotifier<RideState> {
         throw Exception(response['message'] ?? 'Failed to complete ride');
       }
     } catch (e) {
-      AppLogger.error('Failed to complete ride',
-          error: e.toString(),
-          parameters: {
-            'ride_id': rideId,
-          });
+      AppLogger.error('Failed to complete ride', e.toString());
 
       state = state.copyWith(
         isLoading: false,
@@ -233,7 +222,7 @@ class RideNotifier extends StateNotifier<RideState> {
   /// Get current ride details
   Future<void> getCurrentRide() async {
     try {
-      state = state.copyWith(isLoading: true, error: null);
+      state = state.copyWith(isLoading: true, null);
 
       final response = await _apiService.get('/rides/current');
 
@@ -263,7 +252,7 @@ class RideNotifier extends StateNotifier<RideState> {
         throw Exception(response['message'] ?? 'Failed to get current ride');
       }
     } catch (e) {
-      AppLogger.error('Failed to get current ride', error: e.toString());
+      AppLogger.error('Failed to get current ride', e.toString());
 
       state = state.copyWith(
         isLoading: false,
@@ -284,25 +273,17 @@ class RideNotifier extends StateNotifier<RideState> {
               rideStatus: trackingData['status'],
             );
 
-            AppLogger.debug('Live tracking update received', parameters: {
-              'ride_id': rideId,
-              'rider_lat': trackingData['current_rider_lat'],
-              'rider_lon': trackingData['current_rider_lon'],
-              'status': trackingData['status'],
-            });
+            AppLogger.debug('Live tracking update received');
           }
+        },
+        (error) {
+          AppLogger.error('Real-time tracking error', error);
         },
       );
 
-      AppLogger.info('Started real-time tracking', parameters: {
-        'ride_id': rideId,
-      });
+      AppLogger.info('Started real-time tracking');
     } catch (e) {
-      AppLogger.error('Failed to start real-time tracking',
-          error: e.toString(),
-          parameters: {
-            'ride_id': rideId,
-          });
+      AppLogger.error('Failed to start real-time tracking', e.toString());
     }
   }
 
@@ -313,7 +294,7 @@ class RideNotifier extends StateNotifier<RideState> {
 
       AppLogger.info('Stopped real-time tracking');
     } catch (e) {
-      AppLogger.error('Failed to stop real-time tracking', error: e.toString());
+      AppLogger.error('Failed to stop real-time tracking', e.toString());
     }
   }
 

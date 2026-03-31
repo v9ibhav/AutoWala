@@ -84,7 +84,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(isLoading: false);
       }
     } catch (e) {
-      AppLogger.error('Failed to initialize auth', error: e.toString());
+      AppLogger.error('Failed to initialize auth', e.toString());
       state = state.copyWith(
         isLoading: false,
         error: 'Failed to initialize authentication',
@@ -112,8 +112,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         throw Exception(response['message'] ?? 'Failed to send OTP');
       }
     } catch (e) {
-      AppLogger.error('Failed to send OTP',
-          error: e.toString(), parameters: {'phone_number': phoneNumber});
+      AppLogger.error('Failed to send OTP', e, null, {'phone_number': phoneNumber});
 
       state = state.copyWith(
         isLoading: false,
@@ -161,7 +160,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         throw Exception(response['message'] ?? 'Invalid OTP');
       }
     } catch (e) {
-      AppLogger.error('Failed to verify OTP', error: e.toString(), parameters: {
+      AppLogger.error('Failed to verify OTP', e, null, {
         'phone_number': phoneNumber,
         'otp_length': otp.length,
       });
@@ -199,7 +198,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         return true;
       }
     } catch (e) {
-      AppLogger.error('Failed to refresh token', error: e.toString());
+      AppLogger.error('Failed to refresh token', e.toString());
     }
 
     return false;
@@ -214,7 +213,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       return response['success'] == true;
     } catch (e) {
-      AppLogger.debug('Token validation failed', error: e.toString());
+      AppLogger.debug('Token validation failed', {'error': e.toString()});
       return false;
     }
   }
@@ -244,7 +243,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
           });
         } catch (e) {
           // Logout API call failed, but we'll still clear local data
-          AppLogger.warning('Logout API call failed', error: e.toString());
+          AppLogger.warning('Logout API call failed', e.toString());
         }
       }
 
@@ -252,7 +251,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       AppLogger.userAction('user_logged_out');
     } catch (e) {
-      AppLogger.error('Failed to logout', error: e.toString());
+      AppLogger.error('Failed to logout', e.toString());
 
       // Still clear local data even if logout failed
       await _clearAuthData();
@@ -262,7 +261,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   /// Update user profile
   Future<void> updateProfile(Map<String, dynamic> updates) async {
     try {
-      state = state.copyWith(isLoading: true, error: null);
+      state = state.copyWith(isLoading: true, null);
 
       final response =
           await _apiService.put('/user/profile', updates, headers: {
@@ -286,7 +285,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         throw Exception(response['message'] ?? 'Failed to update profile');
       }
     } catch (e) {
-      AppLogger.error('Failed to update profile', error: e.toString());
+      AppLogger.error('Failed to update profile', e.toString());
 
       state = state.copyWith(
         isLoading: false,

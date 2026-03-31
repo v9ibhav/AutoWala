@@ -1,0 +1,168 @@
+
+Running Gradle task 'assembleRelease'...                        
+lib/features/auth/presentation/pages/login_page.dart:94:39: Error: No named parameter with the name 'error'.
+      AppLogger.error('login_failed', error: e.toString(), parameters: {
+                                      ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/auth/presentation/pages/otp_verification_page.dart:147:11: Error: No named parameter with the name 'error'.
+          error: e.toString(),
+          ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/auth/presentation/pages/otp_verification_page.dart:215:44: Error: No named parameter with the name 'error'.
+      AppLogger.error('otp_resend_failed', error: e.toString(), parameters: {
+                                           ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/home/presentation/pages/home_page.dart:576:7: Error: No named parameter with the name 'style'.
+      style: AppConstants.mapStyleDay,
+      ^^^^^
+/C:/Users/Vaibhav%20Katiyar/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter-2.5.3/lib/src/google_map.dart:91:9: Context: Found this candidate, but the arguments don't match.
+  const GoogleMap({
+        ^^^^^^^^^
+lib/features/ride/presentation/pages/ride_booking_page.dart:113:46: Error: No named parameter with the name 'error'.
+      AppLogger.error('ride_booking_failed', error: e.toString(), parameters: {
+                                             ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/ride/presentation/pages/ride_tracking_page.dart:103:11: Error: No named parameter with the name 'error'.
+          error: e.toString());
+          ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/ride/presentation/pages/ride_tracking_page.dart:97:38: Error: Property 'latitude' cannot be accessed on 'Position?' because it is potentially null.
+ - 'Position' is from 'package:geolocator_platform_interface/src/models/position.dart' ('/C:/Users/Vaibhav%20Katiyar/AppData/Local/Pub/Cache/hosted/pub.dev/geolocator_platform_interface-4.2.6/lib/src/models/position.dart').
+Try accessing using ?. instead.
+      _userLocation = LatLng(userPos.latitude, userPos.longitude);
+                                     ^^^^^^^^
+lib/features/ride/presentation/pages/ride_tracking_page.dart:97:56: Error: Property 'longitude' cannot be accessed on 'Position?' because it is potentially null.
+ - 'Position' is from 'package:geolocator_platform_interface/src/models/position.dart' ('/C:/Users/Vaibhav%20Katiyar/AppData/Local/Pub/Cache/hosted/pub.dev/geolocator_platform_interface-4.2.6/lib/src/models/position.dart').
+Try accessing using ?. instead.
+      _userLocation = LatLng(userPos.latitude, userPos.longitude);
+                                                       ^^^^^^^^^
+lib/features/ride/presentation/pages/ride_tracking_page.dart:120:54: Error: No named parameter with the name 'error'.
+      AppLogger.error('Failed to check ride status', error: e.toString());
+                                                     ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/ride/presentation/pages/ride_completed_page.dart:102:41: Error: Member not found: 'light'.
+                  boxShadow: AppShadows.light,
+                                        ^^^^^
+lib/features/ride/presentation/pages/ride_completed_page.dart:145:41: Error: Member not found: 'light'.
+                  boxShadow: AppShadows.light,
+                                        ^^^^^
+lib/features/ride/presentation/pages/ride_completed_page.dart:172:41: Error: Member not found: 'light'.
+                  boxShadow: AppShadows.light,
+                                        ^^^^^
+lib/features/profile/presentation/pages/profile_page.dart:94:54: Error: No named parameter with the name 'error'.
+      AppLogger.error('Failed to load ride history', error: e.toString());
+                                                     ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/profile/presentation/pages/profile_page.dart:141:51: Error: No named parameter with the name 'error'.
+      AppLogger.error('Failed to update profile', error: e.toString());
+                                                  ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/profile/presentation/pages/ride_history_page.dart:170:31: Error: Member not found: 'light'.
+        boxShadow: AppShadows.light,
+                              ^^^^^
+lib/features/profile/presentation/pages/settings_page.dart:177:41: Error: Member not found: 'light'.
+                  boxShadow: AppShadows.light,
+                                        ^^^^^
+lib/features/profile/presentation/pages/settings_page.dart:222:31: Error: Member not found: 'light'.
+        boxShadow: AppShadows.light,
+                              ^^^^^
+lib/features/auth/presentation/providers/auth_provider.dart:87:52: Error: No named parameter with the name 'error'.
+      AppLogger.error('Failed to initialize auth', error: e.toString());
+                                                   ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/auth/presentation/providers/auth_provider.dart:116:11: Error: No named parameter with the name 'error'.
+          error: e.toString(), parameters: {'phone_number': phoneNumber});
+          ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/auth/presentation/providers/auth_provider.dart:164:47: Error: No named parameter with the name 'error'.
+      AppLogger.error('Failed to verify OTP', error: e.toString(), parameters: {
+                                              ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/auth/presentation/providers/auth_provider.dart:202:50: Error: No named parameter with the name 'error'.
+      AppLogger.error('Failed to refresh token', error: e.toString());
+                                                 ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/auth/presentation/providers/auth_provider.dart:217:50: Error: No named parameter with the name 'error'.
+      AppLogger.debug('Token validation failed', error: e.toString());
+                                                 ^^^^^
+lib/core/utils/logger.dart:70:15: Context: Found this candidate, but the arguments don't match.
+  static void debug(String message, [Map<String, dynamic>? data]) {
+              ^^^^^
+lib/features/auth/presentation/providers/auth_provider.dart:247:55: Error: No named parameter with the name 'error'.
+          AppLogger.warning('Logout API call failed', error: e.toString());
+                                                      ^^^^^
+lib/core/utils/logger.dart:44:15: Context: Found this candidate, but the arguments don't match.
+  static void warning(String message, [Map<String, dynamic>? data]) {
+              ^^^^^^^
+lib/features/auth/presentation/providers/auth_provider.dart:255:43: Error: No named parameter with the name 'error'.
+      AppLogger.error('Failed to logout', error: e.toString());
+                                          ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/auth/presentation/providers/auth_provider.dart:289:51: Error: No named parameter with the name 'error'.
+      AppLogger.error('Failed to update profile', error: e.toString());
+                                                  ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/ride/presentation/providers/ride_provider.dart:212:11: Error: No named parameter with the name 'error'.
+          error: e.toString(),
+          ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/ride/presentation/providers/ride_provider.dart:333:11: Error: No named parameter with the name 'error'.
+          error: e.toString(),
+          ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+lib/features/ride/presentation/providers/ride_provider.dart:379:11: Error: No named parameter with the name 'error'.
+          error: e.toString(),
+          ^^^^^
+lib/core/utils/logger.dart:49:15: Context: Found this candidate, but the arguments don't match.
+  static void error(
+              ^^^^^
+Target kernel_snapshot_program failed: Exception
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildRelease'.
+> Process 'command 'C:\Users\Vaibhav Katiyar\dev\flutter\bin\flutter.bat'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 25s
+Running Gradle task 'assembleRelease'...                           25.5s
+Gradle task assembleRelease failed with exit code 1

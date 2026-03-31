@@ -110,7 +110,7 @@ class _RideBookingPageState extends ConsumerState<RideBookingPage>
         _errorMessage = e.toString();
       });
 
-      AppLogger.error('ride_booking_failed', error: e.toString(), parameters: {
+      AppLogger.error('ride_booking_failed', e.toString(), parameters: {
         'rider_id': widget.rider.id,
         'passenger_count': _passengerCount,
       });

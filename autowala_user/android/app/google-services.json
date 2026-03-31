@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "959962535374",
+    "project_id": "autowala-6610e",
+    "storage_bucket": "autowala-6610e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959962535374:android:c58352db09fa08c13e479f",
+        "android_client_info": {
+          "package_name": "com.auto.wala"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-_DaahfBLeej5zmD7Xouz8If5zJBf2JI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

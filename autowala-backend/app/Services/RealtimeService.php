@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Firebase;
+namespace App\Services;
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Database;
@@ -570,5 +570,128 @@ class RealtimeService
             Log::error('Firebase connection test failed', ['error' => $e->getMessage()]);
             return false;
         }
+    }
+
+    /**
+     * Start location broadcast for a rider (alias for updateRiderLocation)
+     */
+    public function startLocationBroadcast(int $riderId, array $locationData): bool
+    {
+        return $this->updateRiderLocation(
+            $riderId,
+            $locationData['latitude'] ?? $locationData['lat'],
+            $locationData['longitude'] ?? $locationData['lon'],
+            $locationData['heading'] ?? null,
+            $locationData['accuracy'] ?? null,
+            $locationData
+        );
+    }
+
+    /**
+     * Stop location broadcast for a rider (alias for removeRiderFromActive)
+     */
+    public function stopLocationBroadcast(int $riderId): bool
+    {
+        return $this->removeRiderFromActive($riderId);
+    }
+
+    /**
+     * Notify rider of new ride request
+     */
+    public function notifyRideRequest(int $riderId, $ride): bool
+    {
+        $rideData = is_array($ride) ? $ride : $ride->toArray();
+
+        return $this->sendRealtimeNotification(
+            "rider_{$riderId}",
+            [
+                'type' => 'ride_request',
+                'ride_id' => $rideData['id'] ?? null,
+                'user_id' => $rideData['user_id'] ?? null,
+                'pickup_location' => $rideData['pickup_location'] ?? null,
+                'dropoff_location' => $rideData['dropoff_location'] ?? null,
+                'pickup_address' => $rideData['pickup_address'] ?? null,
+                'dropoff_address' => $rideData['dropoff_address'] ?? null,
+                'passenger_count' => $rideData['passenger_count'] ?? 1,
+                'fare' => $rideData['fare'] ?? null,
+                'message' => 'New ride request available',
+                'action_required' => 'accept_or_decline',
+            ]
+        );
+    }
+
+    /**
+     * Get current rider location from Firebase or cache
+     */
+    public function getRiderLocation(int $riderId): ?array
+    {
+        try {
+            // Try cache first
+            $cachedLocation = Cache::get("rider_location:{$riderId}");
+            if ($cachedLocation) {
+                return $cachedLocation;
+            }
+
+            // Fetch from Firebase
+            $reference = $this->database->getReference($this->config['realtime']['active_riders'] . '/' . $riderId);
+            $snapshot = $reference->getSnapshot();
+
+            if (!$snapshot->exists()) {
+                return null;
+            }
+
+            $locationData = $snapshot->getValue();
+
+            // Cache for future use
+            Cache::put("rider_location:{$riderId}", $locationData, 300);
+
+            return $locationData;
+
+        } catch (FirebaseException $e) {
+            Log::error('Failed to get rider location from Firebase', [
+                'rider_id' => $riderId,
+                'error' => $e->getMessage()
+            ]);
+
+            return null;
+        }
+    }
+
+    /**
+     * Notify user that ride was accepted by rider
+     */
+    public function notifyRideAccepted(int $userId, $ride): bool
+    {
+        $rideData = is_array($ride) ? $ride : $ride->toArray();
+
+        return $this->sendRealtimeNotification(
+            "user_{$userId}",
+            [
+                'type' => 'ride_accepted',
+                'ride_id' => $rideData['id'] ?? null,
+                'rider_id' => $rideData['rider_id'] ?? null,
+                'rider_name' => $rideData['rider_name'] ?? null,
+                'vehicle_info' => $rideData['vehicle_info'] ?? null,
+                'estimated_pickup_time' => $rideData['estimated_pickup_time'] ?? null,
+                'rider_location' => $rideData['rider_location'] ?? null,
+                'message' => 'Your ride has been accepted!',
+                'status' => 'matched',
+            ]
+        );
+    }
+
+    /**
+     * Backward compatibility methods for different parameter expectations
+     */
+    public function updateRiderLocationCompat(int $riderId, array $locationData): bool
+    {
+        return $this->updateRiderLocation(
+            $riderId,
+            $locationData['latitude'] ?? $locationData['lat'],
+            $locationData['longitude'] ?? $locationData['lon'],
+            $locationData['heading'] ?? null,
+            $locationData['accuracy'] ?? null,
+            $locationData
+        );
     }
 }

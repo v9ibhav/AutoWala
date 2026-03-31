@@ -91,9 +91,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
         _errorMessage = e.toString();
       });
 
-      AppLogger.error('login_failed', error: e.toString(), parameters: {
-        'phone_number': phoneNumber,
-      });
+      AppLogger.error('login_failed', e.toString());
     } finally {
       if (mounted) {
         setState(() {

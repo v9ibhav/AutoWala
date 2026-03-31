@@ -25,6 +25,7 @@ class AppColors {
   static const Color success = Color(0xFF4CAF50);
   static const Color warning = Color(0xFFFF9800);
   static const Color error = Color(0xFFF44336);
+  static const Color errorRed = error; // Alias for backward compatibility
   static const Color info = Color(0xFF2196F3);
 
   // Semantic Colors
@@ -367,6 +368,15 @@ class AppTheme {
 
 /// Theme Extensions for Custom Components
 class AppShadows {
+  static List<BoxShadow> get light => [
+        BoxShadow(
+          color: AppColors.shadowLight,
+          blurRadius: 6,
+          offset: const Offset(0, 1),
+          spreadRadius: 0,
+        ),
+      ];
+
   static List<BoxShadow> get soft => [
         BoxShadow(
           color: AppColors.shadowLight,
@@ -411,7 +421,7 @@ class AppBorders {
   static BorderRadius get extraLarge => BorderRadius.circular(24);
 
   static Border get thin => Border.all(color: AppColors.gray300, width: 1);
-  static Border get medium => Border.all(color: AppColors.gray400, width: 1.5);
+  static Border get mediumBorder => Border.all(color: AppColors.gray400, width: 1.5);
 }
 
 class AppSpacing {

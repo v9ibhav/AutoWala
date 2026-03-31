@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\RideController;
+use App\Http\Controllers\Api\RiderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,26 +109,21 @@ Route::middleware(['auth:api'])->prefix('user')->group(function () {
 
 Route::middleware(['auth:api'])->prefix('rides')->group(function () {
     // Ride Discovery
-    Route::post('/search-nearby', function () {
-        return response()->json(['message' => 'Nearby rides search endpoint - Implementation pending']);
-    })->name('rides.search-nearby')
-      ->middleware(['throttle:60,1']); // 60 requests per minute
+    Route::post('/search-nearby', [RideController::class, 'searchNearby'])
+        ->name('rides.search-nearby')
+        ->middleware(['throttle:60,1']); // 60 requests per minute
 
-    Route::get('/rider/{id}/details', function ($id) {
-        return response()->json(['message' => "Rider {$id} details endpoint - Implementation pending"]);
-    })->name('rides.rider-details');
+    Route::get('/rider/{id}/details', [RideController::class, 'getRiderDetails'])
+        ->name('rides.rider-details');
 
-    Route::post('/book', function () {
-        return response()->json(['message' => 'Ride booking endpoint - Implementation pending']);
-    })->name('rides.book');
+    Route::post('/book', [RideController::class, 'bookRide'])
+        ->name('rides.book');
 
-    Route::get('/{id}/track', function ($id) {
-        return response()->json(['message' => "Ride {$id} tracking endpoint - Implementation pending"]);
-    })->name('rides.track');
+    Route::get('/{id}/track', [RideController::class, 'trackRide'])
+        ->name('rides.track');
 
-    Route::post('/{id}/rating', function ($id) {
-        return response()->json(['message' => "Ride {$id} rating endpoint - Implementation pending"]);
-    })->name('rides.rating');
+    Route::post('/{id}/rating', [RideController::class, 'rateRide'])
+        ->name('rides.rating');
 });
 
 /*
@@ -138,13 +135,11 @@ Route::middleware(['auth:api'])->prefix('rides')->group(function () {
 
 Route::middleware(['auth:api'])->prefix('rider')->group(function () {
     // Registration & Profile
-    Route::post('/register', function () {
-        return response()->json(['message' => 'Rider registration endpoint - Implementation pending']);
-    })->name('rider.register');
+    Route::post('/register', [RiderController::class, 'register'])
+        ->name('rider.register');
 
-    Route::get('/profile', function () {
-        return response()->json(['message' => 'Rider profile endpoint - Implementation pending']);
-    })->name('rider.profile');
+    Route::get('/profile', [RiderController::class, 'getProfile'])
+        ->name('rider.profile');
 
     // KYC Management
     Route::post('/kyc-documents', function () {
@@ -165,18 +160,22 @@ Route::middleware(['auth:api'])->prefix('rider')->group(function () {
     })->name('rider.routes.store');
 
     // Live Operations
-    Route::post('/go-online', function () {
-        return response()->json(['message' => 'Go online endpoint - Implementation pending']);
-    })->name('rider.go-online');
+    Route::post('/go-online', [RiderController::class, 'goOnline'])
+        ->name('rider.go-online');
 
-    Route::post('/go-offline', function () {
-        return response()->json(['message' => 'Go offline endpoint - Implementation pending']);
-    })->name('rider.go-offline');
+    Route::post('/go-offline', [RiderController::class, 'goOffline'])
+        ->name('rider.go-offline');
 
-    Route::post('/location-update', function () {
-        return response()->json(['message' => 'Location update endpoint - Implementation pending']);
-    })->name('rider.location-update')
-      ->middleware(['throttle:120,1']); // 120 requests per minute for location updates
+    Route::post('/location-update', [RiderController::class, 'updateLocation'])
+        ->name('rider.location-update')
+        ->middleware(['throttle:120,1']); // 120 requests per minute for location updates
+
+    // Ride Management
+    Route::post('/accept-ride', [RiderController::class, 'acceptRide'])
+        ->name('rider.accept-ride');
+
+    Route::post('/complete-ride', [RiderController::class, 'completeRide'])
+        ->name('rider.complete-ride');
 });
 
 /*

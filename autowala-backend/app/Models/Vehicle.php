@@ -25,8 +25,11 @@ class Vehicle extends Model
         'max_passengers',
         'registration_doc_url',
         'insurance_doc_url',
+        'insurance_number',
+        'insurance_expiry',
         'pollution_certificate_url',
         'is_verified',
+        'verification_status',
         'verification_notes',
     ];
 
@@ -40,6 +43,7 @@ class Vehicle extends Model
         return [
             'year' => 'integer',
             'max_passengers' => 'integer',
+            'insurance_expiry' => 'date',
             'is_verified' => 'boolean',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
@@ -102,5 +106,45 @@ class Vehicle extends Model
         return !empty($this->registration_doc_url) &&
                !empty($this->insurance_doc_url) &&
                !empty($this->pollution_certificate_url);
+    }
+
+    /**
+     * Accessor for 'capacity' field (controllers expect 'capacity' but model has 'max_passengers')
+     */
+    public function getCapacityAttribute(): int
+    {
+        return $this->max_passengers;
+    }
+
+    /**
+     * Check if insurance is valid (not expired)
+     */
+    public function hasValidInsurance(): bool
+    {
+        return $this->insurance_expiry && $this->insurance_expiry->isFuture();
+    }
+
+    /**
+     * Check if vehicle is approved
+     */
+    public function isApproved(): bool
+    {
+        return $this->verification_status === 'approved';
+    }
+
+    /**
+     * Scope for approved vehicles
+     */
+    public function scopeApproved($query)
+    {
+        return $query->where('verification_status', 'approved');
+    }
+
+    /**
+     * Scope for vehicles with valid insurance
+     */
+    public function scopeWithValidInsurance($query)
+    {
+        return $query->where('insurance_expiry', '>', now()->toDateString());
     }
 }

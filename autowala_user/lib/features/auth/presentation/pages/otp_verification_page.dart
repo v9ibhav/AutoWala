@@ -212,7 +212,7 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage>
     } catch (e) {
       _showError('Failed to resend OTP. Please try again.');
 
-      AppLogger.error('otp_resend_failed', error: e.toString(), parameters: {
+      AppLogger.error('otp_resend_failed', e.toString(), parameters: {
         'phone_number': widget.phoneNumber,
       });
     } finally {

@@ -8,6 +8,9 @@ import '../../features/auth/presentation/pages/onboarding_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/otp_verification_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/ride/data/models/rider_data.dart';
+import '../../features/ride/data/models/vehicle_data.dart';
+import '../../features/ride/data/models/location_data.dart';
 import '../../features/ride/presentation/pages/ride_booking_page.dart';
 import '../../features/ride/presentation/pages/ride_tracking_page.dart';
 import '../../features/ride/presentation/pages/ride_completed_page.dart';
@@ -64,7 +67,7 @@ class AppRouter {
       // Error handling
       errorBuilder: (context, state) => AppErrorPage(
         error: state.error.toString(),
-        route: state.location,
+        route: state.uri.toString(),
       ),
 
       // Route definitions
@@ -112,8 +115,9 @@ class AppRouter {
               builder: (context, state) {
                 final extra = state.extra as Map<String, dynamic>?;
                 return RideBookingPage(
-                  pickupLocation: extra?['pickup_location'],
-                  dropoffLocation: extra?['dropoff_location'],
+                  rider: extra?['rider'] ?? const RiderData(id: '', name: '', phone: '', vehicle: VehicleData(type: '', number: '', model: ''), rating: 5.0, avatar: '', location: LocationData(latitude: 0, longitude: 0, address: '')),
+                  pickupLocation: extra?['pickup_location'] ?? {},
+                  dropoffLocation: extra?['dropoff_location'] ?? {},
                 );
               },
             ),
@@ -122,8 +126,20 @@ class AppRouter {
               path: 'ride/tracking/:rideId',
               name: 'ride-tracking',
               builder: (context, state) {
-                final rideId = state.pathParameters['rideId']!;
-                return RideTrackingPage(rideId: rideId);
+                final extra = state.extra as Map<String, dynamic>? ?? {};
+                return RideTrackingPage(
+                  rider: extra['rider'] ??
+                      const RiderData(
+                          id: '',
+                          name: '',
+                          phone: '',
+                          vehicle: VehicleData(type: '', number: '', model: ''),
+                          rating: 5.0,
+                          avatar: '',
+                          location: LocationData(
+                              latitude: 0, longitude: 0, address: '')),
+                  rideData: extra['rideData'] ?? {},
+                );
               },
             ),
 
@@ -162,8 +178,20 @@ class AppRouter {
           path: '/ride/:rideId',
           name: 'ride-deep-link',
           builder: (context, state) {
-            final rideId = state.pathParameters['rideId']!;
-            return RideTrackingPage(rideId: rideId);
+            final extra = state.extra as Map<String, dynamic>? ?? {};
+            return RideTrackingPage(
+              rider: extra['rider'] ??
+                  const RiderData(
+                      id: '',
+                      name: '',
+                      phone: '',
+                      vehicle: VehicleData(type: '', number: '', model: ''),
+                      rating: 5.0,
+                      avatar: '',
+                      location:
+                          LocationData(latitude: 0, longitude: 0, address: '')),
+              rideData: extra['rideData'] ?? {},
+            );
           },
         ),
 
@@ -171,9 +199,21 @@ class AppRouter {
           path: '/share/ride/:rideId',
           name: 'share-ride',
           builder: (context, state) {
-            final rideId = state.pathParameters['rideId']!;
+            final extra = state.extra as Map<String, dynamic>? ?? {};
             // TODO: Implement ride sharing page
-            return RideTrackingPage(rideId: rideId);
+            return RideTrackingPage(
+              rider: extra['rider'] ??
+                  const RiderData(
+                      id: '',
+                      name: '',
+                      phone: '',
+                      vehicle: VehicleData(type: '', number: '', model: ''),
+                      rating: 5.0,
+                      avatar: '',
+                      location:
+                          LocationData(latitude: 0, longitude: 0, address: '')),
+              rideData: extra['rideData'] ?? {},
+            );
           },
         ),
       ],
@@ -186,7 +226,7 @@ class AppRouter {
   /// Handle navigation redirects based on app state
   static String? _handleRedirect(
       BuildContext context, GoRouterState state, Ref ref) {
-    final location = state.location;
+    final location = state.uri.toString();
 
     // TODO: Check authentication status from provider
     // final authState = ref.read(authStateProvider);

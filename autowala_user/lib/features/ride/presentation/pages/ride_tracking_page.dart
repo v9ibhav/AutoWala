@@ -4,6 +4,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:async';
 
 import '../../../../core/theme/app_theme.dart';
@@ -117,7 +119,48 @@ class _RideTrackingPageState extends ConsumerState<RideTrackingPage>
       final rideNotifier = ref.read(rideProvider.notifier);
       await rideNotifier.getCurrentRide();
     } catch (e) {
-      AppLogger.error('Failed to check ride status', error: e.toString());
+      AppLogger.error('Failed to check ride status', e.toString());
+    }
+  }
+
+  /// Make phone call to rider
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    try {
+      if (phoneNumber.isEmpty) {
+        AppLogger.warning('Phone number is empty');
+        return;
+      }
+
+      final uri = Uri(scheme: 'tel', path: phoneNumber);
+
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+        AppLogger.riderAction('phone_call_initiated', parameters: {
+          'rider_id': widget.rider.id,
+          'phone_number': phoneNumber.replaceAll(
+              RegExp(r'\d(?=\d{4})'), '*'), // Mask number for privacy
+        });
+      } else {
+        AppLogger.error('Could not launch phone dialer');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Could not open phone dialer'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      AppLogger.error('Failed to make phone call', e);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to make phone call'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -604,9 +647,9 @@ class _RideTrackingPageState extends ConsumerState<RideTrackingPage>
               shape: BoxShape.circle,
             ),
             child: IconButton(
-              onPressed: () {
-                // TODO: Implement call functionality
+              onPressed: () async {
                 HapticFeedback.lightImpact();
+                await _makePhoneCall(widget.rider.phone);
               },
               icon: const Icon(
                 Icons.call,
@@ -699,8 +742,14 @@ class _RideTrackingPageState extends ConsumerState<RideTrackingPage>
           ] else if (_rideStatus == 'completed') ...[
             CustomButton(
               onPressed: () {
-                // TODO: Navigate to rating page
-                Navigator.pushReplacementNamed(context, '/home');
+                // Navigate to ride completed page for rating
+                final rideId = widget.rideData['id']?.toString();
+                if (rideId != null) {
+                  context.go('/ride/completed/$rideId');
+                } else {
+                  // Fallback to home if no ride ID
+                  context.go('/');
+                }
               },
               text: 'Rate Your Ride',
               style: CustomButtonStyle.primary,

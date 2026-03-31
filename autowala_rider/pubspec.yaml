@@ -29,7 +29,6 @@ dependencies:
   # Network & API
   dio: ^5.4.3+1
   dio_cache_interceptor: ^3.5.0
-  dio_certificate_pinning: ^7.0.2
 
   # Location & Maps
   google_maps_flutter: ^2.6.1
