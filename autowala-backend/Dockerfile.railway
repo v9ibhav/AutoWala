@@ -13,7 +13,8 @@ RUN apk add --no-cache \
     zip \
     unzip \
     git \
-    bash
+    bash \
+    curl
 
 # Install PHP extensions
 RUN docker-php-ext-install \
@@ -29,33 +30,26 @@ RUN pecl install redis && docker-php-ext-enable redis
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy composer files
-COPY composer.json ./
-COPY composer.lock* ./
+# Copy composer files first (for caching)
+COPY composer.json composer.lock* ./
 
 # Install dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Copy application code
 COPY . .
 
-# Create autowala user
-RUN addgroup -g 1000 autowala && \
-    adduser -D -u 1000 -G autowala autowala
+# Create storage directories
+RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache
 
-# Set permissions
-RUN chown -R autowala:autowala /var/www && \
-    chmod -R 755 /var/www/storage /var/www/bootstrap/cache
+# Set permissions (run as root for Railway, permissions don't matter as much)
+RUN chmod -R 777 storage bootstrap/cache
 
-# Switch to app user
-USER autowala
+# Run composer scripts after copying app code
+RUN composer dump-autoload --optimize
 
 # Expose port (Railway will provide via $PORT)
 EXPOSE 8080
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
-    CMD curl -f http://localhost:${PORT:-8080}/api/health || exit 1
-
-# Start command (can be overridden in Railway)
+# Start command (overridden by railway.json startCommand)
 CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
