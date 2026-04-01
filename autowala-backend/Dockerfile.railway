@@ -4,7 +4,7 @@ FROM php:8.2-cli-alpine
 # Set working directory
 WORKDIR /var/www
 
-# Install system dependencies
+# Install system dependencies (including build tools for PECL)
 RUN apk add --no-cache \
     postgresql-dev \
     curl-dev \
@@ -14,7 +14,11 @@ RUN apk add --no-cache \
     unzip \
     git \
     bash \
-    curl
+    curl \
+    autoconf \
+    gcc \
+    g++ \
+    make
 
 # Install PHP extensions
 RUN docker-php-ext-install \
@@ -26,6 +30,9 @@ RUN docker-php-ext-install \
 
 # Install Redis extension
 RUN pecl install redis && docker-php-ext-enable redis
+
+# Remove build dependencies to reduce image size
+RUN apk del autoconf gcc g++ make
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
