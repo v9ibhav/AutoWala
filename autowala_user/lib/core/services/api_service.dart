@@ -6,7 +6,11 @@ class ApiService {
   late Dio _dio;
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  static const String baseUrl = 'http://localhost/api'; // This should be configured per environment
+  // Configure base URL - will be set from environment or Railway deployment URL
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://autowala-backend-production.up.railway.app/api',
+  );
 
   ApiService() {
     _dio = Dio(BaseOptions(
@@ -47,7 +51,8 @@ class ApiService {
   }
 
   // Generic API methods
-  Future<Map<String, dynamic>> get(String path, {Map<String, dynamic>? queryParams, Map<String, String>? headers}) async {
+  Future<Map<String, dynamic>> get(String path,
+      {Map<String, dynamic>? queryParams, Map<String, String>? headers}) async {
     try {
       final response = await _dio.get(
         path,
@@ -60,7 +65,8 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> post(String path, dynamic data, {Map<String, String>? headers}) async {
+  Future<Map<String, dynamic>> post(String path, dynamic data,
+      {Map<String, String>? headers}) async {
     try {
       final response = await _dio.post(
         path,
@@ -73,7 +79,8 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> put(String path, dynamic data, {Map<String, String>? headers}) async {
+  Future<Map<String, dynamic>> put(String path, dynamic data,
+      {Map<String, String>? headers}) async {
     try {
       final response = await _dio.put(
         path,
@@ -86,7 +93,8 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> delete(String path, {Map<String, String>? headers}) async {
+  Future<Map<String, dynamic>> delete(String path,
+      {Map<String, String>? headers}) async {
     try {
       final response = await _dio.delete(
         path,
@@ -97,6 +105,7 @@ class ApiService {
       rethrow;
     }
   }
+
   Future<Map<String, dynamic>> sendOTP(String phoneNumber) async {
     try {
       final response = await _dio.post('/auth/send-otp', data: {

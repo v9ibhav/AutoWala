@@ -7,34 +7,43 @@ export default {
   theme: {
     extend: {
       colors: {
-        // AutoWala brand colors
+        // AutoWala brand colors - Yellow/Gold Auto-rickshaw Theme
         brand: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e', // Primary green
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
-          950: '#052e16',
+          50: '#FFFBEB',   // Amber 50
+          100: '#FEF3C7',  // Amber 100
+          200: '#FDE68A',  // Amber 200
+          300: '#FCD34D',  // Amber 300
+          400: '#FBBF24',  // Amber 400
+          500: '#F59E0B',  // Primary Yellow/Gold
+          600: '#D97706',  // Amber 600
+          700: '#B45309',  // Amber 700
+          800: '#92400E',  // Amber 800
+          900: '#78350F',  // Amber 900
+          950: '#451A03',  // Amber 950
         },
-        // Admin-specific colors
+        // Auto-rickshaw inspired accent colors
+        auto: {
+          yellow: '#F59E0B',
+          gold: '#D97706',
+          cream: '#FEF3C7',
+          black: '#1C1917',
+          green: '#16A34A',  // For success states
+        },
+        // Admin-specific colors with Yellow/Gold theme
         admin: {
-          bg: '#fafbfc',
+          bg: '#FFFBEB',      // Warm cream background
           surface: '#ffffff',
-          border: '#e2e8f0',
+          border: '#FDE68A',   // Light amber border
           text: {
-            primary: '#0f172a',
-            secondary: '#64748b',
-            muted: '#94a3b8',
+            primary: '#1C1917',
+            secondary: '#78350F',
+            muted: '#92400E',
           },
           accent: {
-            blue: '#3b82f6',
-            orange: '#f59e0b',
-            red: '#ef4444',
+            primary: '#F59E0B',  // Yellow/Gold
+            secondary: '#D97706',
+            success: '#16A34A',
+            error: '#DC2626',
           }
         }
       },

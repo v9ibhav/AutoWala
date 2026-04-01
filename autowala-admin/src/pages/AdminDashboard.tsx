@@ -62,33 +62,33 @@ const cityData = [
   { name: 'Others', rides: 5 },
 ];
 
-const COLORS = ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
+const COLORS = ['#F59E0B', '#D97706', '#B45309', '#16A34A', '#92400E'];
 
 const AdminDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-admin-bg">
       {/* Header */}
-      <header className="bg-white border-b border-admin-border shadow-sm">
+      <header className="bg-brand-500 border-b border-brand-600 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center">
-                  <TruckIcon className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-md">
+                  <TruckIcon className="w-6 h-6 text-brand-600" />
                 </div>
               </div>
-              <h1 className="ml-3 text-xl font-bold text-admin-text-primary">
+              <h1 className="ml-3 text-xl font-bold text-white">
                 AutoWala Admin
               </h1>
             </div>
 
             <div className="flex items-center space-x-4">
               <div className="text-right">
-                <p className="text-sm font-medium text-admin-text-primary">Admin User</p>
-                <p className="text-xs text-admin-text-secondary">admin@autowala.com</p>
+                <p className="text-sm font-medium text-white">Admin User</p>
+                <p className="text-xs text-brand-100">admin@autowala.com</p>
               </div>
-              <div className="w-8 h-8 bg-brand-100 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-brand-700">A</span>
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                <span className="text-sm font-medium text-brand-600">A</span>
               </div>
             </div>
           </div>
@@ -103,8 +103,8 @@ const AdminDashboard: React.FC = () => {
             title="Total Users"
             value={dashboardStats.totalUsers.toLocaleString()}
             growth={dashboardStats.userGrowth}
-            icon={<UsersIcon className="w-8 h-8 text-blue-600" />}
-            color="blue"
+            icon={<UsersIcon className="w-8 h-8 text-brand-600" />}
+            color="gold"
           />
           <StatCard
             title="Active Riders"
@@ -117,53 +117,53 @@ const AdminDashboard: React.FC = () => {
             title="Today's Rides"
             value={dashboardStats.todayRides.toLocaleString()}
             growth={dashboardStats.rideGrowth}
-            icon={<MapPinIcon className="w-8 h-8 text-orange-600" />}
-            color="orange"
+            icon={<MapPinIcon className="w-8 h-8 text-brand-500" />}
+            color="amber"
           />
           <StatCard
             title="Total Revenue"
             value={`₹${(dashboardStats.totalRevenue / 100000).toFixed(1)}L`}
             growth={dashboardStats.revenueGrowth}
-            icon={<CurrencyRupeeIcon className="w-8 h-8 text-purple-600" />}
-            color="purple"
+            icon={<CurrencyRupeeIcon className="w-8 h-8 text-brand-700" />}
+            color="dark"
           />
         </div>
 
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Rides Chart */}
-          <div className="bg-white rounded-lg border border-admin-border shadow-card p-6">
+          <div className="bg-white rounded-lg border border-brand-200 shadow-card p-6">
             <h3 className="text-lg font-semibold text-admin-text-primary mb-4">
               Weekly Rides Overview
             </h3>
             <ResponsiveContainer width="100%" height={300}>
               <AreaChart data={rideAreaData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#FDE68A" />
                 <XAxis
                   dataKey="name"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 12, fill: '#64748b' }}
+                  tick={{ fontSize: 12, fill: '#78350F' }}
                 />
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 12, fill: '#64748b' }}
+                  tick={{ fontSize: 12, fill: '#78350F' }}
                 />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: 'white',
                     borderRadius: '8px',
-                    border: '1px solid #e2e8f0',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                    border: '1px solid #FDE68A',
+                    boxShadow: '0 4px 6px -1px rgba(245, 158, 11, 0.2)',
                   }}
                 />
                 <Area
                   type="monotone"
                   dataKey="rides"
-                  stroke="#22c55e"
-                  fill="#22c55e"
-                  fillOpacity={0.1}
+                  stroke="#F59E0B"
+                  fill="#F59E0B"
+                  fillOpacity={0.2}
                   strokeWidth={2}
                 />
               </AreaChart>
@@ -171,7 +171,7 @@ const AdminDashboard: React.FC = () => {
           </div>
 
           {/* City Distribution */}
-          <div className="bg-white rounded-lg border border-admin-border shadow-card p-6">
+          <div className="bg-white rounded-lg border border-brand-200 shadow-card p-6">
             <h3 className="text-lg font-semibold text-admin-text-primary mb-4">
               Rides by City
             </h3>
@@ -197,15 +197,15 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Recent Rides Table */}
-        <div className="bg-white rounded-lg border border-admin-border shadow-card">
-          <div className="px-6 py-4 border-b border-admin-border">
+        <div className="bg-white rounded-lg border border-brand-200 shadow-card">
+          <div className="px-6 py-4 border-b border-brand-200">
             <h3 className="text-lg font-semibold text-admin-text-primary">
               Recent Rides
             </h3>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-admin-border">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-brand-200">
+              <thead className="bg-brand-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-admin-text-secondary uppercase tracking-wider">
                     User
@@ -224,7 +224,7 @@ const AdminDashboard: React.FC = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-admin-border">
+              <tbody className="bg-white divide-y divide-brand-100">
                 {recentRides.map((ride) => (
                   <tr key={ride.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text-primary">
@@ -259,19 +259,19 @@ interface StatCardProps {
   value: string;
   growth: number;
   icon: React.ReactNode;
-  color: 'blue' | 'green' | 'orange' | 'purple';
+  color: 'gold' | 'green' | 'amber' | 'dark';
 }
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, growth, icon, color }) => {
   const colorClasses = {
-    blue: 'text-blue-600 bg-blue-50',
+    gold: 'text-brand-600 bg-brand-100',
     green: 'text-green-600 bg-green-50',
-    orange: 'text-orange-600 bg-orange-50',
-    purple: 'text-purple-600 bg-purple-50',
+    amber: 'text-brand-500 bg-brand-50',
+    dark: 'text-brand-700 bg-brand-200',
   };
 
   return (
-    <div className="bg-white rounded-lg border border-admin-border shadow-card p-6 hover:shadow-card-hover transition-shadow">
+    <div className="bg-white rounded-lg border border-brand-200 shadow-card p-6 hover:shadow-card-hover hover:border-brand-300 transition-all">
       <div className="flex items-center">
         <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
           {icon}
@@ -311,7 +311,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
         return {
           icon: <ClockIcon className="w-4 h-4" />,
           text: 'In Progress',
-          classes: 'bg-blue-100 text-blue-800',
+          classes: 'bg-brand-100 text-brand-800',
         };
       case 'cancelled':
         return {
@@ -323,7 +323,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
         return {
           icon: null,
           text: status,
-          classes: 'bg-gray-100 text-gray-800',
+          classes: 'bg-brand-50 text-brand-700',
         };
     }
   };

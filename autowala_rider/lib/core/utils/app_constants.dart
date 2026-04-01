@@ -14,8 +14,11 @@ class AppConstants {
   static bool get isReleaseMode => kReleaseMode;
   static bool get isProfileMode => kProfileMode;
 
-  // API Configuration
-  static const String baseUrl = 'https://api.autowala.in';
+  // API Configuration - Railway deployment URL
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://autowala-backend-production.up.railway.app',
+  );
   static const String apiVersion = 'v1';
   static const String apiBaseUrl = '$baseUrl/api/$apiVersion';
 
@@ -25,7 +28,8 @@ class AppConstants {
   static const String riderEndpoint = '$apiBaseUrl/rider';
 
   // Google Maps Configuration
-  static const String googleMapsApiKey = 'AIzaSyBdVl-cGnaq2rt_HEHhoqa_SkGBMiMeBiE'; // Demo key - Update with real key later
+  static const String googleMapsApiKey =
+      'AIzaSyBdVl-cGnaq2rt_HEHhoqa_SkGBMiMeBiE'; // Demo key - Update with real key later
   static const double defaultZoom = 16.0;
   static const double defaultLocationZoom = 18.0;
 
@@ -37,9 +41,11 @@ class AppConstants {
   // Location Configuration
   static const double defaultLatitude = 19.0760; // Mumbai
   static const double defaultLongitude = 72.8777;
-  static const double trackingRadiusKm = 10.0; // How far riders can accept rides
+  static const double trackingRadiusKm =
+      10.0; // How far riders can accept rides
   static const int locationUpdateIntervalMs = 3000; // 3 seconds for riders
-  static const int backgroundLocationIntervalMs = 10000; // 10 seconds in background
+  static const int backgroundLocationIntervalMs =
+      10000; // 10 seconds in background
 
   // UI Configuration
   static const Duration animationDuration = Duration(milliseconds: 300);
@@ -50,7 +56,8 @@ class AppConstants {
   static const Duration networkTimeout = Duration(seconds: 30);
   static const Duration shortTimeout = Duration(seconds: 10);
   static const Duration longTimeout = Duration(minutes: 2);
-  static const Duration rideRequestTimeout = Duration(seconds: 15); // Time to respond to ride requests
+  static const Duration rideRequestTimeout =
+      Duration(seconds: 15); // Time to respond to ride requests
 
   // Cache Configuration
   static const Duration cacheTimeout = Duration(minutes: 15);
@@ -63,8 +70,10 @@ class AppConstants {
   static const int maxLocationUpdatesPerMinute = 20; // Higher for riders
 
   // Business Logic - Rider Specific
-  static const double rideAcceptanceRadiusKm = 5.0; // Max distance to accept rides
-  static const Duration onlineStatusTimeout = Duration(minutes: 5); // Auto offline after inactivity
+  static const double rideAcceptanceRadiusKm =
+      5.0; // Max distance to accept rides
+  static const Duration onlineStatusTimeout =
+      Duration(minutes: 5); // Auto offline after inactivity
   static const int maxConsecutiveRejections = 3; // Before temporary suspension
   static const Duration rejectionPenaltyDuration = Duration(minutes: 10);
 
@@ -98,8 +107,7 @@ class AppConstants {
       'Unable to get your location. Please check permissions.';
   static const String unknownErrorMessage =
       'Something went wrong. Please try again.';
-  static const String rideRequestExpiredMessage =
-      'Ride request has expired.';
+  static const String rideRequestExpiredMessage = 'Ride request has expired.';
   static const String noActiveRideMessage = 'No active ride found.';
 
   // Success Messages
@@ -107,7 +115,8 @@ class AppConstants {
       'OTP sent successfully to your phone number.';
   static const String rideAcceptedMessage = 'Ride accepted successfully!';
   static const String locationUpdatedMessage = 'Location updated successfully.';
-  static const String wentOnlineMessage = 'You are now online and accepting rides.';
+  static const String wentOnlineMessage =
+      'You are now online and accepting rides.';
   static const String wentOfflineMessage = 'You are now offline.';
 
   // Validation
@@ -141,11 +150,17 @@ class AppConstants {
 
   // Performance
   static const int imageCompressionQuality = 85;
-  static const Duration debounceDelay = Duration(milliseconds: 300); // Faster for rider interactions
+  static const Duration debounceDelay =
+      Duration(milliseconds: 300); // Faster for rider interactions
   static const int maxRetryAttempts = 3;
 
   // Rider Status
-  static const List<String> riderStatuses = ['offline', 'online', 'busy', 'break'];
+  static const List<String> riderStatuses = [
+    'offline',
+    'online',
+    'busy',
+    'break'
+  ];
   static const Map<String, String> statusLabels = {
     'offline': 'Offline',
     'online': 'Online - Available',
@@ -187,7 +202,8 @@ class AppConstants {
   static const bool enableCrashlytics = true;
   static const bool enableAnalytics = true;
   static const bool enableAutoStartRide = false; // Auto-start when near pickup
-  static const bool enableOfflineMode = true; // Cache rides for offline handling
+  static const bool enableOfflineMode =
+      true; // Cache rides for offline handling
 
   // Device Support
   static const double minScreenWidth = 320.0;
@@ -212,7 +228,8 @@ class AppConstants {
   static const String loadingAnimationPath = '${animationsPath}loading.json';
   static const String successAnimationPath = '${animationsPath}success.json';
   static const String errorAnimationPath = '${animationsPath}error.json';
-  static const String rideRequestAnimationPath = '${animationsPath}ride_request.json';
+  static const String rideRequestAnimationPath =
+      '${animationsPath}ride_request.json';
 
   // Notifications
   static const String notificationChannelId = 'autowala_rider_rides';

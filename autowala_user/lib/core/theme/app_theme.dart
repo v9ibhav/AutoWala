@@ -2,12 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// Premium AutoWala Design System
-/// White primary, Black text, Green accents - optimized for sunlight visibility
+/// Yellow/Gold primary (Auto-rickshaw inspired), White surface, Black text
 class AppColors {
-  // Primary Colors (High Contrast for Outdoor Use)
+  // Primary Colors - Yellow/Gold Auto-rickshaw Theme
+  static const Color primaryYellow = Color(0xFFF59E0B);  // Main amber/yellow
+  static const Color primaryGold = Color(0xFFD97706);    // Darker gold
+  static const Color primaryDark = Color(0xFF92400E);    // Brown accent
   static const Color primaryWhite = Color(0xFFFFFFFF);
-  static const Color primaryBlack = Color(0xFF000000);
-  static const Color accentGreen = Color(0xFF00C851); // WhatsApp-like green
+  static const Color primaryBlack = Color(0xFF1C1917);   // Warm black
+
+  // Yellow/Gold Palette
+  static const Color amber50 = Color(0xFFFFFBEB);
+  static const Color amber100 = Color(0xFFFEF3C7);
+  static const Color amber200 = Color(0xFFFDE68A);
+  static const Color amber300 = Color(0xFFFCD34D);
+  static const Color amber400 = Color(0xFFFBBF24);
+  static const Color amber500 = Color(0xFFF59E0B);  // Primary
+  static const Color amber600 = Color(0xFFD97706);
+  static const Color amber700 = Color(0xFFB45309);
+  static const Color amber800 = Color(0xFF92400E);
+  static const Color amber900 = Color(0xFF78350F);
 
   // Grayscale Palette
   static const Color gray50 = Color(0xFFFAFAFA);
@@ -22,33 +36,36 @@ class AppColors {
   static const Color gray900 = Color(0xFF212121);
 
   // Status Colors (High Visibility)
-  static const Color success = Color(0xFF4CAF50);
-  static const Color warning = Color(0xFFFF9800);
-  static const Color error = Color(0xFFF44336);
-  static const Color errorRed = error; // Alias for backward compatibility
-  static const Color info = Color(0xFF2196F3);
+  static const Color success = Color(0xFF16A34A);
+  static const Color warning = Color(0xFFF59E0B);  // Same as primary
+  static const Color error = Color(0xFFDC2626);
+  static const Color errorRed = error;
+  static const Color info = Color(0xFF2563EB);
 
   // Semantic Colors
-  static const Color online = Color(0xFF4CAF50);
+  static const Color online = Color(0xFF16A34A);
   static const Color offline = Color(0xFF9E9E9E);
-  static const Color rideActive = Color(0xFF00C851);
-  static const Color rideCompleted = Color(0xFF4CAF50);
-  static const Color rideCancelled = Color(0xFFF44336);
+  static const Color rideActive = Color(0xFFF59E0B);  // Yellow for active
+  static const Color rideCompleted = Color(0xFF16A34A);
+  static const Color rideCancelled = Color(0xFFDC2626);
 
   // Surface Colors
   static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceVariant = Color(0xFFF5F5F5);
-  static const Color background = Color(0xFFFFFFFF);
-  static const Color backgroundVariant = Color(0xFFFAFAFA);
+  static const Color surfaceVariant = Color(0xFFFEF3C7);  // Light amber
+  static const Color background = Color(0xFFFFFBEB);      // Cream background
+  static const Color backgroundVariant = Color(0xFFFEF3C7);
 
   // Card Colors
   static const Color cardWhite = Color(0xFFFFFFFF);
   static const Color cardElevated = Color(0xFFFFFFFF);
 
+  // Legacy color names for backward compatibility
+  static const Color accentGreen = success;
+
   // Shadow Colors
-  static const Color shadowLight = Color(0x1A000000); // 10% black
-  static const Color shadowMedium = Color(0x33000000); // 20% black
-  static const Color shadowStrong = Color(0x4D000000); // 30% black
+  static const Color shadowLight = Color(0x1AF59E0B);
+  static const Color shadowMedium = Color(0x33F59E0B);
+  static const Color shadowStrong = Color(0x4DF59E0B);
 }
 
 class AppTextStyles {
@@ -151,19 +168,19 @@ class AppTextStyles {
 }
 
 class AppTheme {
-  /// Premium Light Theme for AutoWala
+  /// Premium Light Theme for AutoWala - Yellow/Gold
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
 
-      // Color Scheme
+      // Color Scheme - Yellow/Gold Theme
       colorScheme: const ColorScheme.light(
-        primary: AppColors.primaryBlack,
+        primary: AppColors.primaryYellow,
         onPrimary: AppColors.primaryWhite,
-        secondary: AppColors.accentGreen,
+        secondary: AppColors.primaryGold,
         onSecondary: AppColors.primaryWhite,
-        tertiary: AppColors.accentGreen,
+        tertiary: AppColors.success,
         surface: AppColors.surface,
         onSurface: AppColors.primaryBlack,
         background: AppColors.background,
@@ -186,22 +203,23 @@ class AppTheme {
         labelSmall: AppTextStyles.labelSmall,
       ),
 
-      // App Bar Theme
+      // App Bar Theme - Yellow Header
       appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.primaryWhite,
-        foregroundColor: AppColors.primaryBlack,
+        backgroundColor: AppColors.primaryYellow,
+        foregroundColor: AppColors.primaryWhite,
         elevation: 0,
         scrolledUnderElevation: 4,
         shadowColor: AppColors.shadowLight,
-        surfaceTintColor: AppColors.primaryWhite,
-        titleTextStyle: AppTextStyles.h4,
+        surfaceTintColor: AppColors.primaryYellow,
+        titleTextStyle: AppTextStyles.h4.copyWith(color: AppColors.primaryWhite),
         centerTitle: true,
+        iconTheme: const IconThemeData(color: AppColors.primaryWhite),
       ),
 
-      // Button Themes
+      // Button Themes - Yellow/Gold
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryBlack,
+          backgroundColor: AppColors.primaryYellow,
           foregroundColor: AppColors.primaryWhite,
           elevation: 2,
           shadowColor: AppColors.shadowMedium,
@@ -215,14 +233,14 @@ class AppTheme {
 
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.primaryBlack,
-          side: const BorderSide(color: AppColors.gray300, width: 1),
+          foregroundColor: AppColors.primaryYellow,
+          side: const BorderSide(color: AppColors.amber300, width: 1.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           textStyle: AppTextStyles.buttonText.copyWith(
-            color: AppColors.primaryBlack,
+            color: AppColors.primaryYellow,
           ),
         ),
       ),
@@ -250,21 +268,21 @@ class AppTheme {
         margin: const EdgeInsets.all(8),
       ),
 
-      // Input Decoration Theme
+      // Input Decoration Theme - Yellow/Gold accents
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.gray50,
+        fillColor: AppColors.amber50,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.gray300),
+          borderSide: const BorderSide(color: AppColors.amber300),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.gray300),
+          borderSide: const BorderSide(color: AppColors.amber300),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.primaryBlack, width: 2),
+          borderSide: const BorderSide(color: AppColors.primaryYellow, width: 2),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -274,7 +292,7 @@ class AppTheme {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.gray500),
         labelStyle:
-            AppTextStyles.labelMedium.copyWith(color: AppColors.gray600),
+            AppTextStyles.labelMedium.copyWith(color: AppColors.amber700),
       ),
 
       // Bottom Sheet Theme
@@ -298,35 +316,35 @@ class AppTheme {
         contentTextStyle: AppTextStyles.bodyMedium,
       ),
 
-      // Floating Action Button Theme
+      // Floating Action Button Theme - Yellow/Gold
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: AppColors.accentGreen,
+        backgroundColor: AppColors.primaryYellow,
         foregroundColor: AppColors.primaryWhite,
         elevation: 4,
         shape: CircleBorder(),
       ),
 
-      // Progress Indicator Theme
+      // Progress Indicator Theme - Yellow/Gold
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.accentGreen,
-        circularTrackColor: AppColors.gray200,
-        linearTrackColor: AppColors.gray200,
+        color: AppColors.primaryYellow,
+        circularTrackColor: AppColors.amber200,
+        linearTrackColor: AppColors.amber200,
       ),
 
-      // Navigation Theme
+      // Navigation Theme - Yellow/Gold
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: AppColors.primaryWhite,
         surfaceTintColor: AppColors.primaryWhite,
         elevation: 8,
         shadowColor: AppColors.shadowLight,
-        indicatorColor: AppColors.gray100,
+        indicatorColor: AppColors.amber100,
         labelTextStyle: MaterialStateProperty.all(
           AppTextStyles.labelSmall.copyWith(color: AppColors.primaryBlack),
         ),
         iconTheme: MaterialStateProperty.resolveWith((states) {
           return IconThemeData(
             color: states.contains(MaterialState.selected)
-                ? AppColors.primaryBlack
+                ? AppColors.primaryYellow
                 : AppColors.gray500,
             size: 24,
           );
